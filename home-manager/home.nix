@@ -59,9 +59,9 @@
       steam
       steam-run
       protonup-ng
-      flatpak
       openssl
       nerdfonts
+      vesktop
       (lutris.override {
         extraPkgs = pkgs: [
           wineWowPackages.stable
