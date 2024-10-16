@@ -73,12 +73,12 @@
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
   };
 
-  # FIXME: Add the rest of your current configuration
-
-  networking.hostName = "nyarlathotep";
 
   # Enable networking
+  networking.hostName = "nyarlathotep";
   networking.networkmanager.enable = true;
+  networking.nameservers = ["192.168.10.4" "95.217.220.231"];
+
 
   # Set your time zone.
   time.timeZone = "Atlantic/Canary";
@@ -133,18 +133,17 @@
     #media-session.enable = true;
   };
 
-
-
-  # TODO: Configure your system-wide user settings (groups, etc), add more users as needed.
   users.users.urshulgi = {
       isNormalUser = true;
       description = "Phillips Lovecraft";
-      # TODO: Be sure to add any other groups you need (such as networkmanager, audio, docker, etc)
       extraGroups = [ "networkmanager" "wheel"];
+      shell = pkgs.zsh;
   };
 
-  # Install firefox.
+  # Enable firefox.
   programs.firefox.enable = true;
+  # Enable zsh 
+  programs.zsh.enable = true;
   
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -154,6 +153,7 @@
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
+    curl
     brave
     alacritty
     zsh
@@ -163,7 +163,6 @@
     fastfetch
     git
     qtile
-    flatpak
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

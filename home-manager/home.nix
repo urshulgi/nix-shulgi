@@ -53,7 +53,7 @@
       neovim
       cargo
       flameshot
-      qtile
+      obsidian
       quickemu
       quickgui
       steam
@@ -62,6 +62,7 @@
       openssl
       nerdfonts
       vesktop
+      flatpak
       (lutris.override {
         extraPkgs = pkgs: [
           wineWowPackages.stable
@@ -82,10 +83,40 @@
     userName = "Nick Baldallo";
     userEmail = "nick@mich.is";
   };
+  
+  # Config zsh
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+    shellAliases = {
+      ll = "ls -l";
+      nix-update = "cd ~/github-projects/nix-shulgi && sudo nixos-rebuild switch --flake .#nyarlathotep && cd ~";
+      nix-clean = "nix-env --delete-generations old && nix-store --gc";
+    };
+    history = {
+      size = 10000;
+      path = "${config.xdg.dataHome}/zsh/history";
+    };
+    oh-my-zsh = {
+      enable = true;
+      plugins = ["git"];
+      theme = "robbyrussell";
+    };
+  };
+
+  # Zoxide config
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+    options = ["--cmd cd"];
+  };
+
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "23.05";
+  home.stateVersion = "24.05";
 }
