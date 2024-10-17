@@ -56,6 +56,7 @@
       obsidian
       quickemu
       quickgui
+      spice
       steam
       steam-run
       protonup-ng
@@ -63,6 +64,7 @@
       nerdfonts
       vesktop
       flatpak
+      telegram-desktop
       (lutris.override {
         extraPkgs = pkgs: [
           wineWowPackages.stable
@@ -82,6 +84,11 @@
     enable = true;
     userName = "Nick Baldallo";
     userEmail = "nick@mich.is";
+    extraConfig = {
+      core = {
+        editor = "nvim";
+      };
+    };
   };
   
   # Config zsh
@@ -92,8 +99,9 @@
     syntaxHighlighting.enable = true;
     shellAliases = {
       ll = "ls -l";
-      nix-update = "cd ~/github-projects/nix-shulgi && sudo nixos-rebuild switch --flake .#nyarlathotep && cd ~";
-      nix-clean = "nix-env --delete-generations old && nix-store --gc";
+      nix-update = "cd ~/github-projects/nix-shulgi && sudo nixos-rebuild switch --flake .#nyarlathotep";
+      nix-update-boot = "cd ~/github-projects/nix-shulgi && sudo nixos-rebuild switch --flake .#nyarlathotep";
+      nix-clean = "nix-env --delete-generations old && nix-store --gc && sudo nixos-rebuild boot --flake .#nyarlathotep";
     };
     history = {
       size = 10000;
