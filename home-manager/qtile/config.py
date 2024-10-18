@@ -1,12 +1,6 @@
 # Add autostart script
 import os
-import subprocess
 from libqtile import hook
-
-@hook.subscribe.startup_once
-def autostart():
-    home = os.path.expanduser('~/.config/qtile/autostart.sh')
-    subprocess.call([home])
 
 from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
@@ -22,7 +16,6 @@ from libqtile.widget.textbox import TextBox
 
 mod = "mod4"
 terminal = "alacritty"
-#terminal = guess_terminal()
 
 from libqtile.widget import base
 from libqtile import hook

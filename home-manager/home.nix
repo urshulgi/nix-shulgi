@@ -10,7 +10,6 @@
 }: {
   # You can import other home-manager modules here
   imports = [
-    #./grobi.nix
     # If you want to use modules your own flake exports (from modules/home-manager):
     # outputs.homeManagerModules.example
 
@@ -103,8 +102,7 @@
     shellAliases = {
       ll = "ls -l";
       nix-update = "cd ~/github-projects/nix-shulgi && sudo nixos-rebuild switch --flake .#nyarlathotep";
-      nix-update-boot = "cd ~/github-projects/nix-shulgi && sudo nixos-rebuild switch --flake .#nyarlathotep";
-      nix-clean = "nix-env --delete-generations old && nix-store --gc && sudo nixos-rebuild boot --flake .#nyarlathotep";
+      nix-clean = "nix-env --delete-generations old && sudo nix-collect-garbage --delete-older-than 1d && nix-store --gc && sudo nixos-rebuild boot --flake .#nyarlathotep";
     };
     history = {
       size = 10000;
@@ -124,8 +122,10 @@
   xdg.configFile."dunst/dunstrc".source = ./dunst/dunstrc;
   
   # Config picom
-  #services.picom.enable = true;
-  
+  services.picom = {
+    enable = true;
+    package = pkgs.unstable.picom;
+  };
 
   # Zoxide config
   programs.zoxide = {

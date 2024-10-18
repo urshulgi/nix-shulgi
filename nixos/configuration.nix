@@ -185,7 +185,6 @@
     fastfetch
     git
     qtile
-    picom
   ];
 
   # Enable Qtile
