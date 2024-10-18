@@ -129,14 +129,12 @@
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
-  # Enable Qtile
-  services.xserver.windowManager.qtile.enable = true;
-
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
     variant = "";
   };
+  
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -160,7 +158,7 @@
   users.users.urshulgi = {
       isNormalUser = true;
       description = "Phillips Lovecraft";
-      extraGroups = [ "networkmanager" "wheel"];
+      extraGroups = [ "networkmanager" "wheel" "video" "render"];
       shell = pkgs.zsh;
   };
 
@@ -187,7 +185,16 @@
     fastfetch
     git
     qtile
+    picom
   ];
+
+  # Enable Qtile
+  services.xserver.windowManager.qtile = {
+    enable = true;
+    extraPackages = python3Packages: with python3Packages; [
+      (qtile-extras.overridePythonAttrs(old: { disabledTestPaths = ["test/widget/test_strava.py" "test/widget/test_iwd.py" "test/widget/test_upower.py"]; } ))
+    ];
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -210,13 +217,17 @@
   # networking.firewall.enable = false;
   
   # ==== NVIDIA CONFIG ====
+  
+  # Load nvidia driver for Xorg and Wayland
+  services.xserver.videoDrivers = [ "nvidia" ];
+  
   # Enable OpenGL
   hardware.opengl = {
     enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
   };
 
-  # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
 
   hardware.nvidia = {
 
@@ -243,7 +254,7 @@
     open = false;
 
     # Enable the Nvidia settings menu,
-	# accessible via `nvidia-settings`.
+    # accessible via `nvidia-settings`.
     nvidiaSettings = true;
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.

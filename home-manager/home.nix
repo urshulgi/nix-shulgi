@@ -10,6 +10,7 @@
 }: {
   # You can import other home-manager modules here
   imports = [
+    #./grobi.nix
     # If you want to use modules your own flake exports (from modules/home-manager):
     # outputs.homeManagerModules.example
 
@@ -45,7 +46,6 @@
     };
   };
 
-  # TODO: Set your username
   home = {
     username = "urshulgi";
     homeDirectory = "/home/urshulgi";
@@ -65,6 +65,9 @@
       vesktop
       flatpak
       telegram-desktop
+      rofi
+      i3lock
+      dunst
       (lutris.override {
         extraPkgs = pkgs: [
           wineWowPackages.stable
@@ -113,6 +116,16 @@
       theme = "robbyrussell";
     };
   };
+  
+  # Config qtile
+  xdg.configFile."qtile/config.py".source = ./qtile/config.py;
+
+  # Config dunst
+  xdg.configFile."dunst/dunstrc".source = ./dunst/dunstrc;
+  
+  # Config picom
+  #services.picom.enable = true;
+  
 
   # Zoxide config
   programs.zoxide = {
@@ -120,7 +133,62 @@
     enableZshIntegration = true;
     options = ["--cmd cd"];
   };
+  
+  # Grobi config
+  services.grobi = {
+    enable = true;
+    rules = [
+      {
+        name = "Default";
+        outputs_connected = [ "DP-4" "DP-1" "HDMI-0" ];
+        configure_row = [ "HDMI-0" "DP-4" "DP-1" ];
+        primary = "DP-4";
+        atomic = true;
+        execute_after = [
+          "${pkgs.xorg.xrandr}/bin/xrandr --dpi 96"
+          "${pkgs.xorg.xrandr}/bin/xrandr --output 'DP-4' --mode 1920x1080 --primary --rate 144.00"
+          "${pkgs.xorg.xrandr}/bin/xrandr --output 'DP-1' --mode 1920x1080 --rate 119.98"
+          "${pkgs.xorg.xrandr}/bin/xrandr --output 'HDMI-0' --mode 1920x1080 --rate 74.97"
+        ];
+      }
+      {
+        name = "Dual-screen";
+        outputs_connected = [ "DP-4" "HDMI-0" ];
+        configure_row = [ "HDMI-0" "DP-4" ];
+        primary = "DP-4";
+        atomic = true;
+        execute_after = [
+          "${pkgs.xorg.xrandr}/bin/xrandr --dpi 96"
+          "${pkgs.xorg.xrandr}/bin/xrandr --output 'DP-4' --mode 1920x1080 --primary --rate 144.00"
+          "${pkgs.xorg.xrandr}/bin/xrandr --output 'HDMI-0' --mode 1920x1080 --rate 74.97"
+        ];
+      }
+      {
+        name = "Dual-screen 2";
+        outputs_connected = [ "DP-4" "DP-1" ];
+        configure_row = [ "DP-4" "DP-1" ];
+        primary = "DP-4";
+        atomic = true;
+        execute_after = [
+          "${pkgs.xorg.xrandr}/bin/xrandr --dpi 96"
+          "${pkgs.xorg.xrandr}/bin/xrandr --output 'DP-4' --mode 1920x1080 --primary --rate 144.00"
+          "${pkgs.xorg.xrandr}/bin/xrandr --output 'DP-1' --mode 1920x1080 --rate 119.98"
+        ];
+      }
+      {
+        name = "Single screen";
+        outputs_connected = [ "DP-4" ];
+        configure_row = [ "DP-4" ];
+        primary = true;
+        atomic = true;
+        execute_after = [
+          "${pkgs.xorg.xrandr}/bin/xrandr --dpi 96"
+          "${pkgs.xorg.xrandr}/bin/xrandr --output 'DP-4' --mode 1920x1080 --primary --rate 144.00"
+        ];
+      }
 
+    ];
+  };
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
