@@ -50,13 +50,12 @@
     homeDirectory = "/home/urshulgi";
     packages = with pkgs; [
       neovim
+      helix
       cargo
-      flameshot
       obsidian
       quickemu
       quickgui
       spice
-      steam
       steam-run
       protonup-ng
       openssl
@@ -64,8 +63,9 @@
       vesktop
       flatpak
       telegram-desktop
+      unstable.whatsapp-for-linux
       rofi
-      i3lock
+      i3lock-color
       dunst
       goxlr-utility
       plex-media-player
@@ -77,6 +77,8 @@
       eclipses.eclipse-jee
       conda
       whitesur-icon-theme
+      protonup
+      heroic
       (lutris.override {
         extraPkgs = pkgs: [
           wineWowPackages.stable
@@ -86,8 +88,19 @@
     ];
   };
 
+  programs.helix = {
+    enable = true;
+    settings = {
+      theme = "gruvbox";
+    };
+    languages.language = [{
+      name = "nix";
+      auto-format = true;
+      formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
+    }];
+  };
+  
   # Add stuff for your user as you see fit:
-  # programs.neovim.enable = true;
   # home.packages = with pkgs; [ steam ];
 
   # Enable home-manager and git
@@ -98,7 +111,7 @@
     userEmail = "nick@mich.is";
     extraConfig = {
       core = {
-        editor = "nvim";
+        editor = "hx";
       };
     };
   };
@@ -113,6 +126,7 @@
       ll = "ls -l";
       nix-update = "cd ~/github-projects/nix-shulgi && sudo nixos-rebuild switch --flake .#nyarlathotep";
       nix-clean = "nix-env --delete-generations old && sudo nix-collect-garbage --delete-older-than 1d && nix-store --gc && sudo nixos-rebuild boot --flake .#nyarlathotep";
+      vim = "hx ";
     };
     history = {
       size = 10000;
@@ -145,6 +159,19 @@
     enableZshIntegration = true;
     options = ["--cmd cd"];
   };
+  
+  # Flameshot
+  services.flameshot = {
+    enable = true;
+    settings.General = {
+      showStartupLaunchMessage = false;
+      saveLastRegion = true;
+    };
+  };
+  # For proton  
+  home.sessionVariables = {
+    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
+  }; # This requires to run protonup command
   
   # Grobi config
   services.grobi = {

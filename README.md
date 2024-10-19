@@ -23,3 +23,11 @@ To build boot:
 ```
 sudo nixos-rebuild boot --flake .#nyarlathotep 
 ```
+
+## Gaming
+ 
+To enable proton, remember to run:
+
+```
+$ protonup
+```

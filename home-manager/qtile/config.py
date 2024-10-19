@@ -148,7 +148,7 @@ keys = [
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
     Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
     Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
-    Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
+    #Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
     Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
@@ -183,7 +183,7 @@ keys = [
     Key([mod], "p", lazy.spawn("rofi -show drun"), desc="Launch rofi"),
     # Toggle Keyboard layout
     Key([mod, "control"], "space", lazy.widget["keyboardlayout"].next_keyboard(), desc="Next Keyboard Layout"),
-    Key([mod], "print", lazy.spawn("gnome-screenshot -i"), desc="Deepin Screenshot"),
+    Key([], "print", lazy.spawn("flameshot gui --path /home/urshulgi/Pictures"), desc="Deepin Screenshot"),
 
     # Spawn i3lock. Check this post for more customization:
     # https://www.reddit.com/r/unixporn/comments/7df2wz/i3lock_minimal_lockscreen_pretty_indicator/
@@ -278,6 +278,7 @@ todays_wallpaper = f'{WALLPAPERS_DIR}{random.choice(WALLPAPERS)}'
 screens = [
     Screen(
         wallpaper=todays_wallpaper,
+        wallpaper_mode='stretch',
         top=bar.Bar(
             [
                 widget.QuickExit(
@@ -391,6 +392,7 @@ screens = [
     ),
     Screen(
         wallpaper=todays_wallpaper,
+        wallpaper_mode='stretch',
         top=bar.Bar(
             [
                 widget.CurrentLayout(
@@ -437,6 +439,7 @@ screens = [
     ),
     Screen(
         wallpaper=todays_wallpaper,
+        wallpaper_mode='stretch',
         top=bar.Bar(
             [
                 widget.CurrentLayout(

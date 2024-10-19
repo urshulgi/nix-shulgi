@@ -226,7 +226,13 @@
     driSupport = true;
     driSupport32Bit = true;
   };
-
+  
+  # Steam/ Gaming config
+  programs.steam = {
+    enable = true;
+    gamescopeSession.enable = true;
+  };
+  programs.gamemode.enable = true;
 
   hardware.nvidia = {
 
