@@ -76,6 +76,7 @@
       jetbrains.pycharm-professional
       jetbrains.datagrip
       eclipses.eclipse-jee
+      conda
       (lutris.override {
         extraPkgs = pkgs: [
           wineWowPackages.stable
