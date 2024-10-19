@@ -68,7 +68,7 @@
       i3lock
       dunst
       goxlr-utility
-      plex
+      plex-media-player
       plexamp
       spotify
       (lutris.override {
