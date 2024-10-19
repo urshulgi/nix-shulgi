@@ -1,4 +1,5 @@
 # Add autostart script
+import random
 import os
 from libqtile import hook
 
@@ -14,8 +15,10 @@ from typing import Optional
 from libqtile.widget import base
 from libqtile.widget.textbox import TextBox
 
-mod = "mod4"
+mod = "mod4" # Super key
 terminal = "alacritty"
+# Get a list of wallpapers from the folder
+WALLPAPERS = [wallpaper for wallpaper in os.listdir('~/Pictures/wallpapers/') if os.path.isfile(os.path.join('~/Pictures/wallpapers/', f))]
 
 from libqtile.widget import base
 from libqtile import hook
@@ -268,10 +271,12 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
+# Select wallpaper randomly
+todays_wallpaper = random.choice(WALLPAPERS)
 # Icons for widgets: https://fontawesome.com/v5/cheatsheet
 screens = [
     Screen(
-        wallpaper='~/Pictures/wallpapers/nix-wallpaper-simple-red.png',
+        wallpaper=todays_wallpaper,
         top=bar.Bar(
             [
                 widget.QuickExit(
@@ -384,7 +389,7 @@ screens = [
         ),
     ),
     Screen(
-        wallpaper='~/Pictures/wallpapers/wallpaper-paisaje.png',
+        wallpaper=todays_wallpaper,
         top=bar.Bar(
             [
                 widget.CurrentLayout(
@@ -429,7 +434,52 @@ screens = [
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
     ),
+    Screen(
+        wallpaper=todays_wallpaper,
+        top=bar.Bar(
+            [
+                widget.CurrentLayout(
+                    background = colors[5],
+                    foreground = colors[1],
+                    ),
+                right_arrow(colors[6], colors[5]),
+                widget.GroupBox(
+                    background = colors[6],
+                    foreground = colors[1],
+                    padding_x = 5,
+                    padding_y = 5,
+                    fontsize = 30,
+                    highlight_method = "line",
+                    this_current_screen_border = colors[7],
+                    this_screen_border = colors[4],
+                    other_current_screen_border = colors[7],
+                    other_screen_border = colors[4],
+                    ),
+                right_arrow(colors[0], colors[6]),
+                widget.Prompt(
+                    ),
+                widget.WindowName(
+                    ),
+                widget.Chord(
+                    chords_colors={
+                        "launch": ("#ff0000", "#ffffff"),
+                    },
+                    name_transform=lambda name: name.upper(),
+                ),
+                #widget.TextBox("&lt;Win-p&gt; to drun", foreground="#d75f5f"),
+                left_arrow(colors[0], colors[4]),
+                widget.Clock(
+                    format="%I:%M%p \uf073 %a %d/%m/%y",
+                    foreground = colors[0],
+                    background = colors[4],
+                    ),
 
+            ],
+            24,
+            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
+            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
+        ),
+    ),
 ]
 
 # Drag floating layouts.

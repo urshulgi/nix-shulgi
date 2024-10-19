@@ -67,6 +67,7 @@
       rofi
       i3lock
       dunst
+      goxlr-utility
       (lutris.override {
         extraPkgs = pkgs: [
           wineWowPackages.stable
@@ -115,12 +116,13 @@
     };
   };
   
-  # Config qtile
-  xdg.configFile."qtile/config.py".source = ./qtile/config.py;
+  # Config files
+  xdg.configFile = {
+    "qtile/config.py".source = ./qtile/config.py;
+    "dunst/dunstrc".source = ./dunst/dunstrc;
+    "picom/picom.conf".source = ./picom/picom.conf;
+  };
 
-  # Config dunst
-  xdg.configFile."dunst/dunstrc".source = ./dunst/dunstrc;
-  
   # Config picom
   services.picom = {
     enable = true;
