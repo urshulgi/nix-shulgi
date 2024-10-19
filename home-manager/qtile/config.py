@@ -18,7 +18,8 @@ from libqtile.widget.textbox import TextBox
 mod = "mod4" # Super key
 terminal = "alacritty"
 # Get a list of wallpapers from the folder
-WALLPAPERS = [wallpaper for wallpaper in os.listdir('~/Pictures/wallpapers/') if os.path.isfile(os.path.join('~/Pictures/wallpapers/', f))]
+WALLPAPERS_DIR = '/home/urshulgi/Pictures/wallpapers/'
+WALLPAPERS = [wallpaper for wallpaper in os.listdir(WALLPAPERS_DIR) if os.path.isfile(os.path.join(WALLPAPERS_DIR, wallpaper))]
 
 from libqtile.widget import base
 from libqtile import hook
@@ -272,7 +273,7 @@ widget_defaults = dict(
 extension_defaults = widget_defaults.copy()
 
 # Select wallpaper randomly
-todays_wallpaper = random.choice(WALLPAPERS)
+todays_wallpaper = f'{WALLPAPERS_DIR}{random.choice(WALLPAPERS)}'
 # Icons for widgets: https://fontawesome.com/v5/cheatsheet
 screens = [
     Screen(

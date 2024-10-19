@@ -68,6 +68,9 @@
       i3lock
       dunst
       goxlr-utility
+      plex
+      plexamp
+      spotify
       (lutris.override {
         extraPkgs = pkgs: [
           wineWowPackages.stable
