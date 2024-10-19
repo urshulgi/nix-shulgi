@@ -72,7 +72,6 @@
       plexamp
       spotify
       vscode
-      sublime4
       jetbrains.pycharm-professional
       jetbrains.datagrip
       eclipses.eclipse-jee
