@@ -76,6 +76,7 @@
       jetbrains.datagrip
       eclipses.eclipse-jee
       conda
+      whitesur-icon-theme
       (lutris.override {
         extraPkgs = pkgs: [
           wineWowPackages.stable
@@ -129,6 +130,7 @@
     "qtile/config.py".source = ./qtile/config.py;
     "dunst/dunstrc".source = ./dunst/dunstrc;
     "picom/picom.conf".source = ./picom/picom.conf;
+    "rofi/config.rasi".source = ./rofi/config.rasi;
   };
 
   # Config picom
