@@ -141,6 +141,14 @@ def right_arrow(bg_color, fg_color):
         background=bg_color,
         foreground=fg_color)
 
+def spacing_between_boxes(bg_color, fg_color):
+    return TextBox(
+        text=' ',
+        fontsize=5,
+        background=bg_color,
+        foreground=fg_color,
+    )
+
 keys = [
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
@@ -248,22 +256,20 @@ layouts = [
     layout.Floating(),
 ]
 
-colors = [["#282c34", "#282c34"],
-          ["#1c1f24", "#1c1f24"],
-          ["#dfdfdf", "#dfdfdf"],
-          ["#ff6c6b", "#ff6c6b"],
-          ["#98be65", "#98be65"],
-          ["#da8548", "#da8548"],
-          ["#51afef", "#51afef"],
-          ["#c678dd", "#c678dd"],
-          ["#46d9ff", "#46d9ff"],
-          ["#a9a1e1", "#a9a1e1"]]
+colors = ["282c34",
+          "1e2021",
+          "dfdfdf",
+          "ff6c6b",
+          "93971a",
+          "e6692b",
+          "5e9e9f",
+          "c87b98",
+          "46d9ff",
+          "e73c36"]
 
 ##### DEFAULT WIDGET SETTINGS #####
 widget_defaults = dict(
-    #font="Ubuntu Bold",
-    font="Caskaydia Cove Nerd Font Bold",
-    #font="Noto Sans Mono Bold",
+    font="MesloLGM Nerd Font Mono Bold",
     fontsize=14,
     padding_x=5,
     padding_y=0,
@@ -274,216 +280,209 @@ extension_defaults = widget_defaults.copy()
 
 # Select wallpaper randomly
 todays_wallpaper = f'{WALLPAPERS_DIR}{random.choice(WALLPAPERS)}'
-# Icons for widgets: https://fontawesome.com/v5/cheatsheet
+
+def extra_screen_setup():
+    return Screen(
+        wallpaper=todays_wallpaper,
+        wallpaper_mode='stretch',
+        top=bar.Bar([
+            widget.CurrentLayout(
+                background = colors[5],
+                foreground = colors[1],
+                ),
+            spacing_between_boxes(colors[1], colors[1]),
+            #right_arrow(colors[6], colors[5]),
+            widget.GroupBox(
+                background = colors[6],
+                fontsize = 25,
+                highlight_method = "line",
+                this_current_screen_border = colors[7],
+                this_screen_border = colors[4],
+                other_current_screen_border = colors[7],
+                other_screen_border = colors[4],
+                ),
+            #right_arrow(colors[0], colors[6]),
+            widget.Prompt(
+                background = colors[1],
+                ),
+            widget.WindowName(
+                background = colors[1],
+                ),
+            widget.Chord(
+                chords_colors={
+                    "launch": ("#ff0000", "#ffffff"),
+                },
+                name_transform=lambda name: name.upper(),
+            ),
+            #widget.TextBox("&lt;Win-p&gt; to drun", foreground="#d75f5f"),
+            #left_arrow(colors[0], colors[4]),
+            widget.TextBox(
+                background = colors[4],
+                foreground = colors[1],
+                text = "\uf073",
+                fontsize = 30,
+                padding = 4,
+                ),
+            widget.Clock(
+                format="%H:%M | %a %d/%m/%y",
+                foreground = colors[1],
+                background = colors[4],
+                ),
+            ],
+            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
+            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
+            size=24,
+            border_width=[6, 6, 6, 6],  # Draw top and bottom borders
+            border_color=[colors[1], colors[1], colors[1], colors[1]],  # Borders are magenta
+        )
+    )
+
+main_screen_setup = Screen(
+    wallpaper=todays_wallpaper,
+    wallpaper_mode='stretch',
+    top=bar.Bar(
+        widgets=[
+            widget.QuickExit(
+                default_text = '\uf011',
+                countdown_format = '{}',
+                fontsize = 30,
+                background = colors[9],
+                foreground = colors[1],
+                padding = 5,
+                #border = colors[1],
+                #borderwidth = 3,
+                center_aligned = True,
+                ),
+            spacing_between_boxes(colors[1], colors[1]),
+            widget.CurrentLayout(
+                background = colors[5],
+                foreground = colors[1],
+                ),
+            spacing_between_boxes(colors[1], colors[1]),
+            widget.GroupBox(
+                background = colors[6],
+                fontsize = 25,
+                highlight_method = "line",
+                this_current_screen_border = colors[7],
+                this_screen_border = colors[4],
+                other_current_screen_border = colors[7],
+                other_screen_border = colors[4],
+                ),
+            spacing_between_boxes(colors[1], colors[1]),
+            widget.Prompt(
+                background = colors[1],
+                ),
+            spacing_between_boxes(colors[1], colors[1]),
+            widget.WindowName(
+                background = colors[1],
+                ),
+            widget.Chord(
+                background = colors[1],
+                 chords_colors={
+                    "launch": ("#ff0000", "#ffffff"),
+                },
+                name_transform=lambda name: name.upper(),
+            ),
+            # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
+            widget.StatusNotifier(
+                background = colors[5],
+            ),
+            widget.Systray(
+                background = colors[5],
+                foreground = colors[1],
+                ),
+            spacing_between_boxes(colors[1], colors[1]),
+            # Starts right side
+            widget.TextBox(
+                background = colors[7],
+                foreground = colors[1],
+                text = "",
+                fontsize = 30,
+                padding = 4,
+                ),
+            widget.Memory(
+                background = colors[7],
+                foreground = colors[1],
+                format = "{MemUsed:.0f}{mm} /{MemTotal:.0f}{mm}",
+                update_interval = 10.0,
+                measure_mem = "G",
+                ),
+            spacing_between_boxes(colors[1], colors[1]),
+            widget.TextBox(
+                background = colors[6],
+                foreground = colors[1],
+                text = "󰻠",
+                fontsize = 30,
+                padding = 4,
+                ),
+            widget.CPU(
+                background = colors[6],
+                foreground = colors[1],
+                format = "{load_percent}%",
+                update_interval = 10.0,
+                ),
+            spacing_between_boxes(colors[1], colors[1]),
+            #left_arrow(colors[6], colors[4]),
+            widget.TextBox(
+                background = colors[4],
+                foreground = colors[1],
+                text = "\uf073",
+                fontsize = 30,
+                padding = 4,
+                ),
+            widget.Clock(
+                format="%H:%M | %a %d/%m/%y",
+                foreground = colors[1],
+                background = colors[4],
+                ),
+            #left_arrow(colors[4], colors[8]),
+            spacing_between_boxes(colors[1], colors[1]),
+            widget.TextBox(
+                background = colors[8],
+                foreground = colors[1],
+                text = "\uf11c",
+                fontsize = 30,
+                padding = 4,
+                ),
+            widget.KeyboardLayout(
+                configured_keyboards = ['us', 'es'],
+                foreground = colors[1],
+                background = colors[8],
+                fmt = '{}',
+                decorations = [
+                        BorderDecoration(
+                            colour = colors[8],
+                            border_width = [0, 0, 2, 0],
+                            padding_x = 5,
+                            padding_y = None,
+                        )
+                    ],
+                ),
+            spacing_between_boxes(colors[1], colors[1]),
+            #left_arrow(colors[8], colors[7]),
+            widget.TextBox(
+                background = colors[7],
+                foreground = colors[1],
+                text = "\uf028",
+                fontsize = 30,
+                padding = 4,
+                ),
+            widget.Volume(
+                foreground = colors[1],
+                background = colors[7],
+                fmt = '{}',
+                ),
+        ],
+        size=24,
+        border_width=[6, 6, 6, 6],  # Draw top and bottom borders
+        border_color=[colors[1], colors[1], colors[1], colors[1]],  # Borders are magenta
+    ),
+)
+
 screens = [
-    Screen(
-        wallpaper=todays_wallpaper,
-        wallpaper_mode='stretch',
-        top=bar.Bar(
-            [
-                widget.QuickExit(
-                    default_text = '\uf011',
-                    countdown_format = '{}',
-                    background = colors[4],
-                    foreground = colors[1],
-                    ),
-                widget.CurrentLayout(
-                    background = colors[5],
-                    foreground = colors[1],
-                    ),
-                right_arrow(colors[6], colors[5]),
-                widget.GroupBox(
-                    background = colors[6],
-                    foreground = colors[1],
-                    padding_x = 5,
-                    padding_y = -10,
-                    fontsize = 30,
-                    highlight_method = "line",
-                    this_current_screen_border = colors[7],
-                    this_screen_border = colors[4],
-                    other_current_screen_border = colors[7],
-                    other_screen_border = colors[4],
-                    ),
-                right_arrow(colors[0], colors[6]),
-                widget.Prompt(
-                    ),
-                widget.WindowName(
-                    ),
-                widget.Chord(
-                    chords_colors={
-                        "launch": ("#ff0000", "#ffffff"),
-                    },
-                    name_transform=lambda name: name.upper(),
-                ),
-                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-                widget.StatusNotifier(),
-                widget.Systray(
-                    ),
-                left_arrow(colors[0], colors[5]),
-                widget.TextBox(
-                    background = colors[5],
-                    foreground = colors[1],
-                    text = "󰋎",
-                    fontsize = 22,
-                    padding = 5,
-                    ),
-                Output(
-                    background = colors[5],
-                    foreground = colors[1],
-                    cmd="headsetcontrol -b | sed -n -e 's/^.*Battery: //p'", 
-                    shell=True
-                    ),
-                left_arrow(colors[5], colors[7]),
-                widget.Memory(
-                    background = colors[7],
-                    foreground = colors[1],
-                    format = " {MemUsed: .0f}{mm} /{MemTotal: .0f}{mm}",
-                    update_interval = 10.0,
-                    measure_mem = "G",
-                    ),
-                left_arrow(colors[7], colors[6]),
-                widget.TextBox(
-                    background = colors[6],
-                    foreground = colors[1],
-                    text = "󰻠",
-                    fontsize = 22,
-                    padding = 5,
-                    ),
-                widget.CPU(
-                    background = colors[6],
-                    foreground = colors[1],
-                    format = "{load_percent}%",
-                    update_interval = 10.0,
-                    ),
-                left_arrow(colors[6], colors[4]),
-                widget.Clock(
-                    format="%I:%M%p \uf073 %a %d/%m/%y",
-                    foreground = colors[0],
-                    background = colors[4],
-                    ),
-                left_arrow(colors[4], colors[8]),
-                widget.KeyboardLayout(
-                    configured_keyboards = ['us', 'es'],
-                    foreground = colors[0],
-                    background = colors[8],
-                    fmt = '\uf11c  {}',
-                    padding = 5,
-                    decorations = [
-                            BorderDecoration(
-                                colour = colors[8],
-                                border_width = [0, 0, 2, 0],
-                                padding_x = 5,
-                                padding_y = None,
-                            )
-                        ],
-                    ),
-                left_arrow(colors[8], colors[7]),
-                widget.Volume(
-                    foreground = colors[0],
-                    background = colors[7],
-                    fmt = '\uf028  {}',
-                    padding = 5,
-                    ),
-            ],
-            24,
-            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
-        ),
-    ),
-    Screen(
-        wallpaper=todays_wallpaper,
-        wallpaper_mode='stretch',
-        top=bar.Bar(
-            [
-                widget.CurrentLayout(
-                    background = colors[5],
-                    foreground = colors[1],
-                    ),
-                right_arrow(colors[6], colors[5]),
-                widget.GroupBox(
-                    background = colors[6],
-                    foreground = colors[1],
-                    padding_x = 5,
-                    padding_y = 5,
-                    fontsize = 30,
-                    highlight_method = "line",
-                    this_current_screen_border = colors[7],
-                    this_screen_border = colors[4],
-                    other_current_screen_border = colors[7],
-                    other_screen_border = colors[4],
-                    ),
-                right_arrow(colors[0], colors[6]),
-                widget.Prompt(
-                    ),
-                widget.WindowName(
-                    ),
-                widget.Chord(
-                    chords_colors={
-                        "launch": ("#ff0000", "#ffffff"),
-                    },
-                    name_transform=lambda name: name.upper(),
-                ),
-                #widget.TextBox("&lt;Win-p&gt; to drun", foreground="#d75f5f"),
-                left_arrow(colors[0], colors[4]),
-                widget.Clock(
-                    format="%I:%M%p \uf073 %a %d/%m/%y",
-                    foreground = colors[0],
-                    background = colors[4],
-                    ),
-
-            ],
-            24,
-            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
-        ),
-    ),
-    Screen(
-        wallpaper=todays_wallpaper,
-        wallpaper_mode='stretch',
-        top=bar.Bar(
-            [
-                widget.CurrentLayout(
-                    background = colors[5],
-                    foreground = colors[1],
-                    ),
-                right_arrow(colors[6], colors[5]),
-                widget.GroupBox(
-                    background = colors[6],
-                    foreground = colors[1],
-                    padding_x = 5,
-                    padding_y = 5,
-                    fontsize = 30,
-                    highlight_method = "line",
-                    this_current_screen_border = colors[7],
-                    this_screen_border = colors[4],
-                    other_current_screen_border = colors[7],
-                    other_screen_border = colors[4],
-                    ),
-                right_arrow(colors[0], colors[6]),
-                widget.Prompt(
-                    ),
-                widget.WindowName(
-                    ),
-                widget.Chord(
-                    chords_colors={
-                        "launch": ("#ff0000", "#ffffff"),
-                    },
-                    name_transform=lambda name: name.upper(),
-                ),
-                #widget.TextBox("&lt;Win-p&gt; to drun", foreground="#d75f5f"),
-                left_arrow(colors[0], colors[4]),
-                widget.Clock(
-                    format="%I:%M%p \uf073 %a %d/%m/%y",
-                    foreground = colors[0],
-                    background = colors[4],
-                    ),
-
-            ],
-            24,
-            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
-        ),
-    ),
+    main_screen_setup,
+    extra_screen_setup(),
+    extra_screen_setup(),
 ]
 
 # Drag floating layouts.

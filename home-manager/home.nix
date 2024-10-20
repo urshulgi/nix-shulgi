@@ -1,13 +1,6 @@
 # This is your home-manager configuration file
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
-{
-  inputs,
-  outputs,
-  lib,
-  config,
-  pkgs,
-  ...
-}: {
+{ inputs, outputs, lib, config, pkgs, ... }: {
   # You can import other home-manager modules here
   imports = [
     # If you want to use modules your own flake exports (from modules/home-manager):
@@ -67,7 +60,6 @@
       rofi
       i3lock-color
       dunst
-      goxlr-utility
       plex-media-player
       plexamp
       spotify
@@ -75,31 +67,44 @@
       jetbrains.pycharm-professional
       jetbrains.datagrip
       eclipses.eclipse-jee
-      conda
       whitesur-icon-theme
       protonup
       heroic
+      distrobox
+      btop
       (lutris.override {
-        extraPkgs = pkgs: [
-          wineWowPackages.stable
-          winetricks		
-        ];
+        extraPkgs = pkgs: [ wineWowPackages.stable winetricks ];
       })
     ];
   };
 
+  home.pointerCursor = {
+    size = 40;
+    package = pkgs.material-cursors;
+    name = "material_light_cursors";
+    # name = "Vimix-cursors";
+
+    # package = pkgs.capitaine-cursors;
+    # name = "capitaine-cursors";
+
+    # package = pkgs.nur.repos.ambroisie.volantes-cursors;
+    # name = "volantes_light_cursors";
+    # name = "volantes_cursors";
+
+    # package = pkgs.nur.repos.dan4ik605743.lyra-cursors;
+    # name = "LyraF-cursors";
+  };
+
   programs.helix = {
     enable = true;
-    settings = {
-      theme = "gruvbox";
-    };
+    settings = { theme = "gruvbox"; };
     languages.language = [{
       name = "nix";
       auto-format = true;
-      formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
+      formatter.command = "${pkgs.nixfmt-classic}/bin/nixfmt";
     }];
   };
-  
+
   # Add stuff for your user as you see fit:
   # home.packages = with pkgs; [ steam ];
 
@@ -109,13 +114,9 @@
     enable = true;
     userName = "Nick Baldallo";
     userEmail = "nick@mich.is";
-    extraConfig = {
-      core = {
-        editor = "hx";
-      };
-    };
+    extraConfig = { core = { editor = "hx"; }; };
   };
-  
+
   # Config zsh
   programs.zsh = {
     enable = true;
@@ -124,9 +125,12 @@
     syntaxHighlighting.enable = true;
     shellAliases = {
       ll = "ls -l";
-      nix-update = "cd ~/github-projects/nix-shulgi && sudo nixos-rebuild switch --flake .#nyarlathotep";
-      nix-clean = "nix-env --delete-generations old && sudo nix-collect-garbage --delete-older-than 1d && nix-store --gc && sudo nixos-rebuild boot --flake .#nyarlathotep";
+      nix-update =
+        "cd ~/github-projects/nix-shulgi && sudo nixos-rebuild switch --flake .#nyarlathotep";
+      nix-clean =
+        "nix-env --delete-generations old && sudo nix-collect-garbage --delete-older-than 1d && nix-store --gc && sudo nixos-rebuild boot --flake .#nyarlathotep";
       vim = "hx ";
+      htop = "btop";
     };
     history = {
       size = 10000;
@@ -134,11 +138,11 @@
     };
     oh-my-zsh = {
       enable = true;
-      plugins = ["git"];
+      plugins = [ "git" ];
       theme = "robbyrussell";
     };
   };
-  
+
   # Config files
   xdg.configFile = {
     "qtile/config.py".source = ./qtile/config.py;
@@ -157,9 +161,9 @@
   programs.zoxide = {
     enable = true;
     enableZshIntegration = true;
-    options = ["--cmd cd"];
+    options = [ "--cmd cd" ];
   };
-  
+
   # Flameshot
   services.flameshot = {
     enable = true;
@@ -170,9 +174,10 @@
   };
   # For proton  
   home.sessionVariables = {
-    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
+    STEAM_EXTRA_COMPAT_TOOLS_PATHS =
+      "\${HOME}/.steam/root/compatibilitytools.d";
   }; # This requires to run protonup command
-  
+
   # Grobi config
   services.grobi = {
     enable = true;

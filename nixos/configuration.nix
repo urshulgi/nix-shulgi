@@ -1,13 +1,6 @@
 # This is your system's configuration file.
 # Use this to configure your system environment (it replaces /etc/nixos/configuration.nix)
-{
-  inputs,
-  outputs,
-  lib,
-  config,
-  pkgs,
-  ...
-}: {
+{ inputs, outputs, lib, config, pkgs, ... }: {
   # You can import other NixOS modules here
   imports = [
     # If you want to use modules your own flake exports (from modules/nixos):
@@ -18,7 +11,7 @@
     # inputs.hardware.nixosModules.common-ssd
 
     # You can also split up your configuration and import pieces of it here:
-     ./home.nix
+    ./home.nix
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
@@ -50,7 +43,7 @@
       };
     };
   };
-  
+
   # ==== END GRUB CONFIG ====
 
   nixpkgs = {
@@ -75,11 +68,16 @@
     config = {
       # Disable if you don't want unfree packages
       #allowUnfree = true;
+      packageOverrides = pkgs: {
+        nur = import (builtins.fetchTarball
+          "https://github.com/nix-community/NUR/archive/master.tar.gz") {
+            inherit pkgs;
+          };
+      };
     };
   };
 
-  nix = let
-    flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
+  nix = let flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
   in {
     settings = {
       # Enable flakes and new 'nix' command
@@ -93,16 +91,14 @@
     channel.enable = false;
 
     # Opinionated: make flake registry and nix path match flake inputs
-    registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
+    registry = lib.mapAttrs (_: flake: { inherit flake; }) flakeInputs;
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
   };
-
 
   # Enable networking
   networking.hostName = "nyarlathotep";
   networking.networkmanager.enable = true;
-  networking.nameservers = ["192.168.10.4" "95.217.220.231"];
-
+  networking.nameservers = [ "192.168.10.4" "95.217.220.231" ];
 
   # Set your time zone.
   time.timeZone = "Atlantic/Canary";
@@ -134,7 +130,6 @@
     layout = "us";
     variant = "";
   };
-  
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -155,18 +150,20 @@
     #media-session.enable = true;
   };
 
+  services.goxlr-utility.enable = true;
+
   users.users.urshulgi = {
-      isNormalUser = true;
-      description = "Phillips Lovecraft";
-      extraGroups = [ "networkmanager" "wheel" "video" "render"];
-      shell = pkgs.zsh;
+    isNormalUser = true;
+    description = "Phillips Lovecraft";
+    extraGroups = [ "networkmanager" "wheel" "video" "render" ];
+    shell = pkgs.zsh;
   };
 
   # Enable firefox.
   programs.firefox.enable = true;
   # Enable zsh 
   programs.zsh.enable = true;
-  
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -190,9 +187,17 @@
   # Enable Qtile
   services.xserver.windowManager.qtile = {
     enable = true;
-    extraPackages = python3Packages: with python3Packages; [
-      (qtile-extras.overridePythonAttrs(old: { disabledTestPaths = ["test/widget/test_strava.py" "test/widget/test_iwd.py" "test/widget/test_upower.py"]; } ))
-    ];
+    extraPackages = python3Packages:
+      with python3Packages;
+      [
+        (qtile-extras.overridePythonAttrs (old: {
+          disabledTestPaths = [
+            "test/widget/test_strava.py"
+            "test/widget/test_iwd.py"
+            "test/widget/test_upower.py"
+          ];
+        }))
+      ];
   };
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -214,19 +219,19 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
-  
+
   # ==== NVIDIA CONFIG ====
-  
+
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = [ "nvidia" ];
-  
+
   # Enable OpenGL
   hardware.opengl = {
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
   };
-  
+
   # Steam/ Gaming config
   programs.steam = {
     enable = true;
@@ -273,7 +278,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
- 
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "24.05";
