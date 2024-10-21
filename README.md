@@ -31,3 +31,25 @@ To enable proton, remember to run:
 ```
 $ protonup
 ```
+
+## Cleaning the system
+
+`/nix` folder can get pretty big. Make sure to cleam your system sometimes.
+
+(Read this reddit thread)[https://www.reddit.com/r/NixOS/comments/10107km/how_to_delete_old_generations_on_nixos/]
+TL;DR
+
+
+```
+  nix-env --list-generations
+
+  nix-collect-garbage  --delete-old
+
+  nix-collect-garbage  --delete-generations 1 2 3
+
+  # recommeneded to sometimes run as sudo to collect additional garbage
+  sudo nix-collect-garbage -d
+
+  # As a separation of concerns - you will need to run this command to clean out boot
+  sudo /run/current-system/bin/switch-to-configuration boot
+```

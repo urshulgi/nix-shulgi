@@ -170,6 +170,11 @@
     '';
   };
 
+  # Enable xhost for distrobox
+  services.xserver.displayManager.sessionCommands = ''
+    xhost +SI:localuser:urshulgi
+  '';
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
@@ -224,6 +229,7 @@
     distrobox
     pipewire
     pavucontrol
+    xorg.xhost
   ];
 
   # Enable Qtile
