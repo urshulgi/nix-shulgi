@@ -70,7 +70,6 @@
       whitesur-icon-theme
       protonup
       heroic
-      distrobox
       btop
       (lutris.override {
         extraPkgs = pkgs: [ wineWowPackages.stable winetricks ];
@@ -82,17 +81,6 @@
     size = 40;
     package = pkgs.material-cursors;
     name = "material_light_cursors";
-    # name = "Vimix-cursors";
-
-    # package = pkgs.capitaine-cursors;
-    # name = "capitaine-cursors";
-
-    # package = pkgs.nur.repos.ambroisie.volantes-cursors;
-    # name = "volantes_light_cursors";
-    # name = "volantes_cursors";
-
-    # package = pkgs.nur.repos.dan4ik605743.lyra-cursors;
-    # name = "LyraF-cursors";
   };
 
   programs.helix = {
@@ -178,7 +166,7 @@
       "\${HOME}/.steam/root/compatibilitytools.d";
   }; # This requires to run protonup command
 
-  # Grobi config
+  # Grobi config (For configuring monitors)
   services.grobi = {
     enable = true;
     rules = [
