@@ -160,6 +160,7 @@
       saveLastRegion = true;
     };
   };
+
   # For proton  
   home.sessionVariables = {
     STEAM_EXTRA_COMPAT_TOOLS_PATHS =

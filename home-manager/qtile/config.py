@@ -191,7 +191,7 @@ keys = [
     Key([mod], "p", lazy.spawn("rofi -show drun"), desc="Launch rofi"),
     # Toggle Keyboard layout
     Key([mod, "control"], "space", lazy.widget["keyboardlayout"].next_keyboard(), desc="Next Keyboard Layout"),
-    Key([], "print", lazy.spawn("flameshot gui --path /home/urshulgi/Pictures"), desc="Deepin Screenshot"),
+    Key([], "print", lazy.spawn("flameshot gui"), desc="Flameshot"),
 
     # Spawn i3lock. Check this post for more customization:
     # https://www.reddit.com/r/unixporn/comments/7df2wz/i3lock_minimal_lockscreen_pretty_indicator/
