@@ -71,6 +71,7 @@
       protonup
       heroic
       btop
+      localsend
       (lutris.override {
         extraPkgs = pkgs: [ wineWowPackages.stable winetricks ];
       })
@@ -139,6 +140,7 @@
         "nix-env --delete-generations old && sudo nix-collect-garbage --delete-older-than 1d && nix-store --gc && sudo nixos-rebuild boot --flake .#nyarlathotep";
       vim = "hx ";
       htop = "btop";
+      windows = "quickemu --vm ~/vms/windows-10.conf --display spice";
     };
     history = {
       size = 10000;

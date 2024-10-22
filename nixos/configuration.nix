@@ -175,6 +175,9 @@
     xhost +SI:localuser:urshulgi
   '';
 
+  # Enable SPICE for quickemu Vms clipboard sharing
+  services.spice-vdagentd.enable = true;
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
