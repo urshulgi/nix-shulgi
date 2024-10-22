@@ -84,7 +84,7 @@
   # };
 
   home.pointerCursor = let
-    getFrom = url: name: {
+    getFrom = url: hash: name: {
       gtk.enable = true;
       x11.enable = true;
       name = name;
@@ -99,7 +99,9 @@
         } $out/share/icons/${name}
       '';
     };
-  in getFrom "" "Protozoa";
+  in getFrom
+  "https://github.com/urshulgi/nix-shulgi/raw/refs/heads/master/home-manager/cursor/Protozoa.tar.gz"
+  "sha256-2l7EhfC7DAY6jjXMzqL3gFn6oEnDcS9jn36AJzJvqUM=" "Protozoa";
 
   programs.helix = {
     enable = true;
