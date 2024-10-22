@@ -108,7 +108,17 @@
 
   programs.helix = {
     enable = true;
-    settings = { theme = "gruvbox"; };
+    settings = {
+      theme = "gruvbox";
+      editor = {
+        color-modes = true;
+        statusline.mode = {
+          normal = "NORMAL";
+          insert = "INSERT";
+          select = "SELECT";
+        };
+      };
+    };
     languages.language = [{
       name = "nix";
       auto-format = true;
