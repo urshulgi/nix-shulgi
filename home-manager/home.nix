@@ -77,11 +77,29 @@
     ];
   };
 
-  home.pointerCursor = {
-    size = 40;
-    package = pkgs.material-cursors;
-    name = "material_light_cursors";
-  };
+  # home.pointerCursor = {
+  #   size = 40;
+  #   package = pkgs.material-cursors;
+  #   name = "material_light_cursors";
+  # };
+
+  home.pointerCursor = let
+    getFrom = url: name: {
+      gtk.enable = true;
+      x11.enable = true;
+      name = name;
+      size = 48;
+      package = pkgs.runCommand "moveUp" { } ''
+        mkdir -p $out/share/icons
+        ln -s ${
+          pkgs.fetchzip {
+            url = url;
+            hash = hash;
+          }
+        } $out/share/icons/${name}
+      '';
+    };
+  in getFrom "" "Protozoa";
 
   programs.helix = {
     enable = true;
