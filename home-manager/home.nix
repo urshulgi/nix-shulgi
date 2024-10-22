@@ -73,7 +73,7 @@
       btop
       localsend
       wineWowPackages.full
-      winbox4
+      winbox
       (lutris.override {
         extraPkgs = pkgs: [ wineWowPackages.stable winetricks ];
       })
