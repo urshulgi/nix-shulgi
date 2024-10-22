@@ -72,6 +72,8 @@
       heroic
       btop
       localsend
+      wineWowPackages.full
+      winbox4
       (lutris.override {
         extraPkgs = pkgs: [ wineWowPackages.stable winetricks ];
       })
