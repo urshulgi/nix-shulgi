@@ -104,6 +104,7 @@
             inherit pkgs;
           };
       };
+      permittedInsecurePackages = [ "xpdf-4.05" ];
     };
   };
 
@@ -233,6 +234,7 @@
     pipewire
     pavucontrol
     xorg.xhost
+    xpdf
   ];
 
   # Enable Qtile
