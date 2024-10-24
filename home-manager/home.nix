@@ -74,6 +74,7 @@
       localsend
       wineWowPackages.full
       winbox
+      gnome-online-accounts-gtk
       (lutris.override {
         extraPkgs = pkgs: [ wineWowPackages.stable winetricks ];
       })
