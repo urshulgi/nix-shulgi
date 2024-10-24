@@ -110,13 +110,17 @@
     enable = true;
     settings = {
       theme = "gruvbox";
+      keys.normal.esc = [ "collapse_selection" "keep_primary_selection" ];
       editor = {
+        line-number = "relative";
+        bufferline = "multiple";
         color-modes = true;
         statusline.mode = {
           normal = "NORMAL";
           insert = "INSERT";
           select = "SELECT";
         };
+        cursor-shape = { insert = "bar"; };
       };
     };
     languages.language = [{

@@ -127,9 +127,23 @@
   };
 
   # Enable networking
+  networking.interfaces.enp8s0.ipv4.addresses = [{
+    address = "192.168.10.3";
+    prefixLength = 24;
+  }];
+  networking.defaultGateway = "192.168.10.1";
   networking.hostName = "nyarlathotep";
   networking.networkmanager.enable = true;
-  networking.nameservers = [ "192.168.10.4" "95.217.220.231" ];
+  networking.nameservers = [ "192.168.10.4" "95.217.220.231" "1.1.1.1" ];
+  networking.enableIPv6 = false;
+
+  # Allow MAC address connection winbox
+  networking.firewall.allowedUDPPorts = [ 5678 20561 ];
+  networking.firewall.extraCommands =
+    "iptables -I INPUT -p tcp -s 0.0.0.0 -j ACCEPT && iptables -I INPUT -p udp -s 0.0.0.0 -j ACCEPT";
+
+  # If needed, add more ports here for TCP
+  # networking.firewall.allowedTCPPorts = [];
 
   # Set your time zone.
   time.timeZone = "Atlantic/Canary";
