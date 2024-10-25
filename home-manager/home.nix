@@ -75,6 +75,7 @@
       wineWowPackages.full
       winbox
       gnome-online-accounts-gtk
+      gparted
       (lutris.override {
         extraPkgs = pkgs: [ wineWowPackages.stable winetricks ];
       })
@@ -126,7 +127,7 @@
     };
     languages.language = [{
       name = "nix";
-      auto-format = true;
+      auto-format = false;
       formatter.command = "${pkgs.nixfmt-classic}/bin/nixfmt";
     }];
   };

@@ -4,26 +4,31 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+  boot.initrd.availableKernelModules =
+    [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/4516637a-fac8-4bb9-aaa9-4eb0f7f98ae1";
-      fsType = "btrfs";
-      options = [ "subvol=@" ];
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/4516637a-fac8-4bb9-aaa9-4eb0f7f98ae1";
+    fsType = "btrfs";
+    options = [ "subvol=@" ];
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/C0F7-0E8B";
-      fsType = "vfat";
-      options = [ "fmask=0077" "dmask=0077" ];
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/C0F7-0E8B";
+    fsType = "vfat";
+    options = [ "fmask=0077" "dmask=0077" ];
+  };
+
+  fileSystems."/mnt/games" = {
+    device = "/dev/disk/by-uuid/f52b2692-5167-4e0d-bdcc-eb4c8062775b";
+    fsType = "ext4";
+    options = [ "rw" "users" ];
+  };
 
   swapDevices = [ ];
 
@@ -35,5 +40,6 @@
   # networking.interfaces.enp8s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.amd.updateMicrocode =
+    lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
