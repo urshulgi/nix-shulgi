@@ -27,7 +27,7 @@
   fileSystems."/mnt/games" = {
     device = "/dev/disk/by-uuid/f52b2692-5167-4e0d-bdcc-eb4c8062775b";
     fsType = "ext4";
-    options = [ "rw" "users" ];
+    options = [ "rw" "users" "exec" ];
   };
 
   swapDevices = [ ];
