@@ -462,6 +462,22 @@ main_screen_setup = Screen(
                     ],
                 ),
             spacing_between_boxes(colors[1], colors[1]),
+            #left_arrow(colors[6], colors[4]),
+            # widget.TextBox(
+            #     background = colors[4],
+            #     foreground = colors[1],
+            #     text = "\uf293",
+            #     fontsize = 30,
+            #     padding = 4,
+            #     ),
+            widget.Bluetooth(
+                default_show_battery = True,
+                default_text = '\uf293',
+                fontsize = 25,
+                foreground = colors[1],
+                background = colors[5],
+                ),
+            spacing_between_boxes(colors[1], colors[1]),
             #left_arrow(colors[8], colors[7]),
             widget.TextBox(
                 background = colors[7],

@@ -137,6 +137,7 @@
   networking.nameservers = [ "192.168.10.4" "95.217.220.231" "1.1.1.1" ];
   networking.enableIPv6 = false;
 
+  networking.firewall.allowedTCPPorts = [ 6568 7070 ];
   # Allow MAC address connection winbox
   networking.firewall.allowedUDPPorts = [ 5678 20561 ];
   networking.firewall.extraCommands =
@@ -255,6 +256,7 @@
     xorg.xhost
     xpdf
     ntfs3g
+    networkmanagerapplet
   ];
 
   # Enable Qtile

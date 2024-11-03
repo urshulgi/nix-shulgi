@@ -76,6 +76,10 @@
       winbox
       gnome-online-accounts-gtk
       gparted
+      appimage-run
+      anydesk
+      remmina
+      moonlight-qt
       (lutris.override {
         extraPkgs = pkgs: [ wineWowPackages.stable winetricks ];
       })
@@ -199,6 +203,16 @@
       showStartupLaunchMessage = false;
       saveLastRegion = true;
     };
+  };
+
+  # OBS
+  programs.obs-studio = {
+    enable = true;
+    plugins = with pkgs.obs-studio-plugins; [
+      obs-pipewire-audio-capture
+      obs-backgroundremoval
+      obs-websocket
+    ];
   };
 
   # For proton  
